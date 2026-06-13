@@ -1,3 +1,12 @@
+## [0.5.12] 2026-06-13
+- **DEPRECATED**: This package is no longer maintained.
+  Use [rootengine](https://pypi.org/project/rootengine/) instead. This is the final release.
+- 元数据层面的 deprecation 标记：
+  - README 顶部加 deprecation 红字
+  - pyproject 加 `Development Status :: 7 - Inactive` 分类器
+  - 版本号 bump 到 0.5.12
+- 不涉及任何代码逻辑改动，包体保持 0.5.11 状态
+
 ## [0.5.0] 2026-04-09
 - 上传了内部多次迭代后的代码
 

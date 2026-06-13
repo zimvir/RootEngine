@@ -1,3 +1,7 @@
+> ⚠️ **DEPRECATED** — This package has been merged into [rootengine](https://pypi.org/project/rootengine/). Please install `rootengine` instead. This is the final release; no further updates will be made.
+>
+> 旧版本仍可继续使用，但建议尽快迁移。
+
 # RootEngine Core
 
 AI Agent 框架的底层组件库。
