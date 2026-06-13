@@ -118,7 +118,7 @@ JSON_DICT = '''
     module_content += pprint.pformat(json_dict, indent=2)
     module_content += '''
 
-def get_json(key: str) -> dict:
+def get_json(key: str):
     """根据键名获取JSON数据
 
     Args:

@@ -17,7 +17,26 @@
 - 更新 generate_json_dict.py 注释示例
 - 修复 create() 返回类型（返回 entry dict 而非 self）
 - 微调 CHANGELOG 格式
+                                      
 
 ## [0.5.8] 2026-4-25
-
 - 把 conversation 的 add 方法 改成了 append ，更符合语义。删掉了add，关于这个add方法，不向后兼容
+                           
+
+## [0.5.9] 2026-4-25
+- 删除 llm_message.json、llm_output.json
+- 新增 llm_unified_request.json（统一请求格式）
+- 新增 llm_unified_response.json（统一响应格式）
+
+## [0.5.10] 2026-4-25
+- v0.5.9 改了源文件后忘重新生成 runtime 了，这次更新是 重新生成runtime 的
+
+## [0.5.11] 2026-4-25
+
+- schema/source/llm/llm_unified_response.json   
+主要改动：
+  - messages: [...] → message: { ... }（单条消息对象）
+  - role 枚举改成 ["assistant", "tool"]
+  - usage 移到顶层
+  - 去掉那个有问题的 allOf 逻辑
+  - 加了 id、model 顶层字段

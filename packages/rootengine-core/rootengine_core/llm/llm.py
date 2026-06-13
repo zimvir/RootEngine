@@ -16,11 +16,11 @@ class BaseLLM(ABC):
             -> Dict[str, Any]:
         """
 
-        :param messages: 消息列表 参考 ../schema/source/llm/llm_message.json
+        :param messages: 消息列表 参考 ../schema/source/llm/llm_unified_request.json
         :param tool_registry: 工具注册表 参考 ../schema/source/tool/tool_registry.json
         :param tool_choice: 工具选择策略 参考 ../schema/source/llm/tool_choice.json
         :param kwargs: 拓展任意字段
-        :return: 参考 ../schema/source/llm/llm_output.json
+        :return: 参考 ../schema/source/llm/llm_unified_response.json
 
         """
         pass

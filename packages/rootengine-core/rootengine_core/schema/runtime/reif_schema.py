@@ -24,105 +24,132 @@ JSON_DICT = { 'conversation.no_tool_conversation': { '$schema': 'http://json-sch
                                                     'type': 'object'},
                                          'title': 'reif_content_no_tool_conversation',
                                          'type': 'array'},
-  'llm.llm_message': { '$schema': 'http://json-schema.org/draft-07/schema#',
-                       'allOf': [ { 'if': { 'properties': { 'role': { 'const': 'tool'}}},
-                                    'then': { 'properties': { 'content': { 'description': 'tool '
-                                                                                          '角色的 '
-                                                                                          'content '
-                                                                                          '必须为 '
-                                                                                          'tool_result '
-                                                                                          '对象',
-                                                                           'type': 'object'},
-                                                              'tool_call_id': { 'pattern': '^[0-9a-fA-F]{32}$',
-                                                                                'type': 'string'}},
-                                              'required': ['tool_call_id']}},
-                                  { 'if': { 'properties': { 'role': { 'const': 'assistant'}}},
-                                    'then': { 'properties': { 'tool_calls': { 'items': { '$ref': 'tool/tool_call.json'},
-                                                                              'type': 'array'}}}}],
-                       'description': 'LLM 对话消息单条格式，与 OpenAI 格式解耦',
-                       'properties': { 'content': { 'description': '消息内容',
-                                                    'oneOf': [ { 'description': 'assistant '
-                                                                                '无文字内容时（如纯工具调用）',
-                                                                 'type': 'null'},
-                                                               { 'description': 'system/user/assistant '
-                                                                                '普通文字内容',
-                                                                 'type': 'string'},
-                                                               { 'description': 'tool '
-                                                                                '角色时为 '
-                                                                                'tool_result '
-                                                                                '对象',
-                                                                 'type': 'object'}]},
-                                       'created_at': { 'description': '创建时间 '
-                                                                      'ISO '
-                                                                      '8601',
-                                                       'format': 'date-time',
-                                                       'type': 'string'},
-                                       'extra': { 'additionalProperties': True,
-                                                  'description': '扩展数据',
-                                                  'type': ['object', 'null']},
-                                       'role': { 'description': '消息角色',
-                                                 'enum': [ 'system',
-                                                           'user',
-                                                           'assistant',
-                                                           'tool'],
-                                                 'type': 'string'},
-                                       'tool_call_id': { 'description': 'tool '
-                                                                        '角色必填，关联到 '
-                                                                        'assistant '
-                                                                        '消息 '
-                                                                        'tool_calls '
-                                                                        '中对应 '
-                                                                        'call '
-                                                                        '的 id',
-                                                         'pattern': '^[0-9a-fA-F]{32}$',
-                                                         'type': 'string'},
-                                       'tool_calls': { 'description': 'LLM '
-                                                                      '工具调用列表，仅 '
-                                                                      'assistant '
-                                                                      '消息可能包含',
-                                                       'items': { '$ref': '../tool/tool_call.json'},
-                                                       'type': 'array'}},
-                       'required': ['role', 'created_at'],
-                       'title': 'llm_message',
-                       'type': 'object'},
-  'llm.llm_output': { '$schema': 'http://json-schema.org/draft-07/schema#',
-                      'description': 'LLM 单次调用的返回格式',
-                      'properties': { 'content': { 'description': 'LLM '
-                                                                  '回复的文字内容，无文字时为 '
-                                                                  'null（纯工具调用场景）',
-                                                   'oneOf': [ {'type': 'null'},
-                                                              { 'type': 'string'}]},
-                                      'created_at': { 'description': 'LLM '
-                                                                     '返回时间，ISO '
-                                                                     '8601 格式',
-                                                      'format': 'date-time',
-                                                      'type': 'string'},
-                                      'extra': { 'additionalProperties': True,
-                                                 'description': '扩展数据',
-                                                 'type': ['object', 'null']},
-                                      'tool_calls': { 'description': 'LLM '
-                                                                     '发起的工具调用列表，无工具调用时为 '
-                                                                     'null',
-                                                      'items': { '$ref': '../tool/tool_call.json'},
-                                                      'type': 'array'},
-                                      'usage': { 'description': 'Token 用量统计',
-                                                 'properties': { 'completion_tokens': { 'description': '生成回复消耗的 '
-                                                                                                       'token '
-                                                                                                       '数',
-                                                                                        'type': 'integer'},
-                                                                 'prompt_tokens': { 'description': '输入 '
-                                                                                                   'prompt '
-                                                                                                   '消耗的 '
-                                                                                                   'token '
-                                                                                                   '数',
-                                                                                    'type': 'integer'},
-                                                                 'total_tokens': { 'description': '总 '
-                                                                                                  'token '
-                                                                                                  '数',
-                                                                                   'type': 'integer'}},
-                                                 'type': 'object'}},
-                      'title': 'llm_output',
-                      'type': 'object'},
+  'llm.llm_unified_request': { '$schema': 'http://json-schema.org/draft-07/schema#',
+                               'allOf': [ { 'if': { 'properties': { 'role': { 'const': 'tool'}}},
+                                            'then': { 'properties': { 'content': { 'description': 'tool '
+                                                                                                  '角色的 '
+                                                                                                  'content '
+                                                                                                  '必须为 '
+                                                                                                  'tool_result '
+                                                                                                  '对象',
+                                                                                   'type': 'object'},
+                                                                      'tool_call_id': { 'pattern': '^[0-9a-fA-F]{32}$',
+                                                                                        'type': 'string'}},
+                                                      'required': [ 'tool_call_id']}},
+                                          { 'if': { 'properties': { 'role': { 'const': 'assistant'}}},
+                                            'then': { 'properties': { 'tool_calls': { 'items': { '$ref': '../tool/tool_call.json'},
+                                                                                      'type': 'array'}}}}],
+                               'description': 'LLM 对话消息单条格式，与 OpenAI 格式解耦',
+                               'items': { 'properties': { 'content': { 'description': '消息内容',
+                                                                       'oneOf': [ { 'description': 'assistant '
+                                                                                                   '无文字内容时（如纯工具调用）',
+                                                                                    'type': 'null'},
+                                                                                  { 'description': 'system/user/assistant '
+                                                                                                   '普通文字内容',
+                                                                                    'type': 'string'},
+                                                                                  { 'description': 'tool '
+                                                                                                   '角色时为 '
+                                                                                                   'tool_result '
+                                                                                                   '对象',
+                                                                                    'type': 'object'}]},
+                                                          'created_at': { 'description': '创建时间 '
+                                                                                         'ISO '
+                                                                                         '8601',
+                                                                          'format': 'date-time',
+                                                                          'type': 'string'},
+                                                          'extra': { 'additionalProperties': True,
+                                                                     'description': '扩展数据',
+                                                                     'type': [ 'object',
+                                                                               'null']},
+                                                          'role': { 'description': '消息角色',
+                                                                    'enum': [ 'system',
+                                                                              'user',
+                                                                              'assistant',
+                                                                              'tool'],
+                                                                    'type': 'string'},
+                                                          'tool_call_id': { 'description': 'tool '
+                                                                                           '角色必填，关联到 '
+                                                                                           'assistant '
+                                                                                           '消息 '
+                                                                                           'tool_calls '
+                                                                                           '中对应 '
+                                                                                           'call '
+                                                                                           '的 '
+                                                                                           'id',
+                                                                            'pattern': '^[0-9a-fA-F]{32}$',
+                                                                            'type': 'string'},
+                                                          'tool_calls': { 'description': 'LLM '
+                                                                                         '工具调用列表，仅 '
+                                                                                         'assistant '
+                                                                                         '消息可能包含',
+                                                                          'items': { '$ref': '../tool/tool_call.json'},
+                                                                          'type': 'array'}},
+                                          'title': 'message',
+                                          'type': 'object'},
+                               'required': ['role', 'created_at'],
+                               'title': 'llm_unified_require',
+                               'type': 'array'},
+  'llm.llm_unified_response': { '$schema': 'http://json-schema.org/draft-07/schema#',
+                                'properties': { 'created_at': { 'description': '响应创建时间，ISO '
+                                                                               '8601 '
+                                                                               '格式',
+                                                                'format': 'date-time',
+                                                                'type': 'string'},
+                                                'extra': { 'additionalProperties': True,
+                                                           'description': '扩展数据',
+                                                           'type': [ 'object',
+                                                                     'null']},
+                                                'id': { 'description': '响应 ID',
+                                                        'type': 'string'},
+                                                'message': { 'description': 'LLM '
+                                                                            '返回的消息',
+                                                             'properties': { 'content': { 'description': 'LLM '
+                                                                                                         '回复的文字内容，无文字时为 '
+                                                                                                         'null（纯工具调用场景）',
+                                                                                          'oneOf': [ { 'type': 'null'},
+                                                                                                     { 'type': 'string'}]},
+                                                                             'created_at': { 'description': '消息创建时间，ISO '
+                                                                                                            '8601 '
+                                                                                                            '格式',
+                                                                                             'format': 'date-time',
+                                                                                             'type': 'string'},
+                                                                             'extra': { 'additionalProperties': True,
+                                                                                        'description': '扩展数据',
+                                                                                        'type': [ 'object',
+                                                                                                  'null']},
+                                                                             'role': { 'description': '消息角色',
+                                                                                       'enum': [ 'assistant',
+                                                                                                 'tool'],
+                                                                                       'type': 'string'},
+                                                                             'tool_calls': { 'description': 'LLM '
+                                                                                                            '发起的工具调用列表',
+                                                                                             'items': { '$ref': '../tool/tool_call.json'},
+                                                                                             'type': 'array'}},
+                                                             'required': [ 'role',
+                                                                           'created_at'],
+                                                             'type': 'object'},
+                                                'model': { 'description': '模型名称',
+                                                           'type': 'string'},
+                                                'usage': { 'description': 'Token '
+                                                                          '用量统计',
+                                                           'properties': { 'completion_tokens': { 'description': '生成回复消耗的 '
+                                                                                                                 'token '
+                                                                                                                 '数',
+                                                                                                  'type': 'integer'},
+                                                                           'prompt_tokens': { 'description': '输入 '
+                                                                                                             'prompt '
+                                                                                                             '消耗的 '
+                                                                                                             'token '
+                                                                                                             '数',
+                                                                                              'type': 'integer'},
+                                                                           'total_tokens': { 'description': '总 '
+                                                                                                            'token '
+                                                                                                            '数',
+                                                                                             'type': 'integer'}},
+                                                           'type': 'object'}},
+                                'required': ['id', 'model', 'message'],
+                                'title': 'LLM Unified Response',
+                                'type': 'object'},
   'llm.tool_choice': { '$schema': 'http://json-schema.org/draft-07/schema#',
                        'description': 'Controls how the model uses tools. Can '
                                       'be a simple string mode or an object '
@@ -238,6 +265,14 @@ JSON_DICT = { 'conversation.no_tool_conversation': { '$schema': 'http://json-sch
                       'required': ['id', 'type', 'created_at'],
                       'title': 'tool_call',
                       'type': 'object'},
+  'tool.tool_func_map': { '$schema': 'http://json-schema.org/draft-07/schema#',
+                          'additionalProperties': False,
+                          'description': '工具函数映射字典',
+                          'patternProperties': { '^[0-9a-fA-F]{32}$': { 'function': { 'description': 'python '
+                                                                                                     '函数对象'}}},
+                          'required': ['^[0-9a-fA-F]{32}$'],
+                          'title': 'tool_func_map',
+                          'type': 'object'},
   'tool.tool_registry': { '$schema': 'http://json-schema.org/draft-07/schema#',
                           'additionalProperties': False,
                           'description': '工具注册表，键为 tool_id（32位十六进制），值为工具信息',
