@@ -23,7 +23,7 @@ docs/project.md
 
 # Claude Code
 .claude/
-
+cm/
 # IDE 配置
 .idea/
 .vscode/
