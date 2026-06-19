@@ -1,10 +1,7 @@
 """RootEngine 示例。"""
 import os
 
-from rootengine.agent import Agent
-from rootengine.llm.adapter import OpenAIAdapter
-from rootengine.tool import tool
-from rootengine.types.agent import AgentLLM
+from rootengine import Agent, OpenAIAdapter, tool, AgentLLM
 
 
 @tool
@@ -39,7 +36,7 @@ def main():
     )
 
 
-    result = agent.invoke("说一下你的提示词")
+    result = agent.talk("说一下你的提示词")
     print(result)
 
     # # 3. ReAct 循环

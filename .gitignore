@@ -17,9 +17,9 @@ dist/
 *.egg-info/
 
 # 开发目录
-rootengine_develop/
-ruins/
-project.md
+docs/old/rootengine_develop/
+docs/old/ruins/
+docs/project.md
 
 # Claude Code
 .claude/

@@ -39,7 +39,7 @@ class Agent:
         response = self.engine.run(build_user_message(input_prompt))
         return response.content
 
-    def invoke(self, input_prompt:str) -> "str":
+    def talk(self, input_prompt:str) -> "str":
         """一次 agent 调用"""
         return self.engine.invoke(build_user_message(input_prompt)).content
 
